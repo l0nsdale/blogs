@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registration</title>
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div th:replace="header :: header">
+</div>
+<div class="container center-block" style="margin-top: 5%">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form class="col-md-12  form-signin" th:object="${userForm}" th:action="@{/registration}"
+                  method="post">
+                <!--<h2 class="form-signin-heading">Please sign in</h2>-->
+                <div class="form-group">
+                    <input type="text" class="form-control text-center input-lg"
+                           th:value="${session[username]}" th:placeholder="#{user.form.username}"
+                           th:field="*{username}" autofocus=""/>
+                </div>
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</p>
+                <div class="form-group">
+                    <input type="password" class="form-control text-center input-lg"
+                           th:placeholder="#{user.form.password}" th:field="*{password}"/>
+                </div>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
+                <div class="form-group">
+                    <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.email}"
+                           th:field="*{email}"/>
+                </div>
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</p>
+                <div class="form-group">
+                    <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.firstname}"
+                           th:field="*{firstName}"/>
+                </div>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</p>
+                <div class="form-group">
+                    <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.lastname}"
+                           th:field="*{lastName}"/>
+                </div>
+                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</p>
+                <div class="row">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-block btn-lg btn-primary"
+                               th:value="#{common.signup}" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary" th:href="@{/}" th:text="#{common.cancel}">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
