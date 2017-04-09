@@ -32,6 +32,7 @@ public class Constants {
 
     public static final class Common {
         public static final int ONE = 1;
+        public static final String EMPTY = "";
     }
 
 }

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,6 +68,20 @@ public class UserServiceImpl implements UserService {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    @Override
+    public boolean isExistUsername(String username) {
+        if (userDao.findByUsername(username) != null)
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean isExistEmail(String email) {
+        if (userDao.findByEmail(email) != null)
+            return true;
         return false;
     }
 }

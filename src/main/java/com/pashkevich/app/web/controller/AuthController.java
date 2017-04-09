@@ -4,16 +4,15 @@ import com.pashkevich.app.listeners.OnRegistrationCompleteEvent;
 import com.pashkevich.app.model.User;
 import com.pashkevich.app.service.SecurityService;
 import com.pashkevich.app.service.UserService;
+import com.pashkevich.app.utils.UrlUtils;
 import com.pashkevich.app.web.dto.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
@@ -38,6 +37,9 @@ public class AuthController {
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(UserForm userForm) {
         return LOGIN_PAGE;
@@ -52,7 +54,7 @@ public class AuthController {
             securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
             return TO_HOME;
         }
-        model.addAttribute("enabled", "Please, activate your account");
+        model.addAttribute("enabled", true);
         return LOGIN_PAGE;
     }
 
@@ -62,27 +64,57 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registrationSubmit(@Valid @ModelAttribute UserForm userForm, BindingResult result, WebRequest request) {
+    public String registrationSubmit(@Valid @ModelAttribute UserForm userForm, BindingResult result, WebRequest request, Model model) {
         if (result.hasErrors()) {
+            return REGISTRATION_PAGE;
+        }
+        String username = userForm.getUsername();
+        String email = userForm.getEmail();
+        if (isExistUsername(username)) {
+            model.addAttribute("existUsername", true);
+            return REGISTRATION_PAGE;
+        }
+        if (isExistEmail(email)) {
+            model.addAttribute("existEmail", true);
             return REGISTRATION_PAGE;
         }
         User user = new User();
         user.setFirstName(userForm.getFirstName());
         user.setLastName(userForm.getLastName());
-        user.setEmail(userForm.getEmail());
-        user.setUsername(userForm.getUsername());
+        user.setEmail(email);
+        user.setUsername(username);
         user.setPassword(userForm.getPassword());
         user.setEnabled(false);
         userService.save(user);
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), request.getContextPath()));
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), UrlUtils.getAppUrl(request)));
         return LOGIN_PAGE;
     }
 
     @RequestMapping(value = "/registrationConfirm.html")
-    public String registrationConfirm(@RequestParam("token") String token, UserForm userForm){
+    public String registrationConfirm(@RequestParam("token") String token, UserForm userForm) {
         if (userService.enableAccount(token)) {
             return LOGIN_PAGE;
         }
         return TO_HOME;
+    }
+
+    @RequestMapping(value = "/isExistUsername", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    boolean isExistUsername(@RequestParam String username) {
+        if (userService.isExistUsername(username)) {
+            return true;
+        }
+        return false;
+    }
+
+    @RequestMapping(value = "/isExistEmail", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    boolean isExistEmail(@RequestParam String email) {
+        if (userService.isExistEmail(email)) {
+            return true;
+        }
+        return false;
     }
 }

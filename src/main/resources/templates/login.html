@@ -20,16 +20,16 @@
                 <h2 class="form-signin-heading">Please sign in</h2>
                 <div class="form-group">
                     <input type="text" class="form-control text-center input-lg"
-                           th:value="${session[username]}" placeholder="Username"
+                           th:value="${session[username]}" th:placeholder="#{user.form.username}"
                            th:field="*{username}" autofocus=""/>
                 </div>
                 <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</p>
                 <div class="form-group">
                     <input type="password" class="form-control text-center input-lg"
-                           placeholder="Password" th:field="*{password}"/>
+                           th:placeholder="#{user.form.password}" th:field="*{password}"/>
                 </div>
                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
-                <div th:if="${enabled != null}" th:text="${enabled}"></div>
+                <div th:if="${enabled != null}" th:text="#{login.not-enabled}"></div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-block btn-lg btn-primary"
                            value="Sign in"/>
@@ -37,10 +37,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <a class="btn btn-primary" style="width: 100%"
-                           href="/registration">Register</a>
+                           th:href="@{/registration}" th:text="#{common.register}">Register</a>
                     </div>
                     <div class="col-md-6">
-                        <a class="btn btn-primary" style="width: 100%" th:href="@{/}">Cancel</a>
+                        <a class="btn btn-primary" style="width: 100%" th:href="@{/}" th:text="#{common.cancel}">Cancel</a>
                     </div>
                 </div>
             </form>

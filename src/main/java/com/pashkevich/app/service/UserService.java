@@ -13,4 +13,8 @@ public interface UserService {
     void createVerificationToken(String token, User user);
 
     boolean enableAccount(String token);
+
+    boolean isExistUsername(String username);
+
+    boolean isExistEmail(String email);
 }

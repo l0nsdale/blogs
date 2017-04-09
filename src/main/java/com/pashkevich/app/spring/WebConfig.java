@@ -26,15 +26,15 @@ import static com.pashkevich.app.constants.Constants.Packages.CONTROLLERS;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.US);
         return slr;
     }
 
     @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
-        ReloadableResourceBundleMessageSource messageSource=  new ReloadableResourceBundleMessageSource();
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:locale/messages");
         messageSource.setCacheSeconds(3600);
         return messageSource;

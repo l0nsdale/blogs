@@ -48,7 +48,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
                 email.setFrom(env.getProperty("smtp.username"));
                 email.setTo(recipientAddress);
                 email.setSubject(subject);
-                email.setText(messageSource.getMessage("reg.go.url", null, event.getLocale()) + "http://localhost:8080" + confirmationUrl);
+                email.setText(messageSource.getMessage("reg.go.url", null, event.getLocale()) + confirmationUrl);
                 mailSender.send(email);
             }
         });
