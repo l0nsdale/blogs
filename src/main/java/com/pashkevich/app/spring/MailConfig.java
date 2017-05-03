@@ -39,6 +39,8 @@ public class MailConfig {
         final Properties javaMailProps = new Properties();
         javaMailProps.put("mail.smtp.auth", true);
         javaMailProps.put("mail.smtp.starttls.enable", true);
+        javaMailProps.put("mail.smtp.starttls.enable", true);
+        javaMailProps.put("mail.debug", true);
         mailSenderImpl.setJavaMailProperties(javaMailProps);
         return mailSenderImpl;
     }

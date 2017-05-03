@@ -29,7 +29,14 @@
                            th:placeholder="#{user.form.password}" th:field="*{password}"/>
                 </div>
                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
-                <div th:if="${enabled != null}" th:text="#{login.not-enabled}"></div>
+                <div id="accountNotEnabled" th:if="${enabled != null}">
+                    <div class="col-md-6">
+                        <p th:text="#{login.not-enabled}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <button onclick="resendConfirmationMessage()" type="button" class="btn btn-primary" th:text="#{reg.resend.message}"></button>
+                    </div>
+                </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-block btn-lg btn-primary"
                            value="Sign in"/>
@@ -47,5 +54,7 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script th:src="@{/js/login.js}"></script>
 </body>
 </html>

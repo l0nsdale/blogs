@@ -9,6 +9,13 @@ public class Constants {
         public static final String HOME_PAGE = "home";
         public static final String LOGIN_PAGE = "login";
         public static final String REGISTRATION_PAGE = "registration";
+        public static final String USER_PROFILE = "home_user";
+        public static final String NEW_BLOG = "newblog";
+        public static final String BLOG_EDIT = "editblog";
+        public static final String BLOG_HOME = "bloghome";
+        public static final String NEW_PAGE = "newpage";
+        public static final String USER_PAGE = "page";
+        public static final String EDIT_PAGE = "editpage";
     }
 
     public static final class Redirect {

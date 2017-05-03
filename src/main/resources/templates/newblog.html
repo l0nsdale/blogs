@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create your blog</title>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--th:href="@{/resources/static/css/min_decor.css}" />-->
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
+</head>
+<body>
+<div th:replace="header :: header">
+</div>
+<div class="modal-dialog">
+    <form id="submitForm" class="col-md-12 center-block"
+          th:action="@{|~/${#authentication.name}/newblog|}"
+          method="post">
+        <div class="form-group">
+            <input type="text" class="form-control input-lg"
+                   placeholder="Name your blog" required="required" value="" name="blogName" pattern=".+$"
+                   title="One or more characters"/>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control input-lg"
+                   placeholder="Tags for your blog" required="required" name="tags" pattern=".+$"
+                   title='One or more characters.Divide tags with ,'/>
+        </div>
+        <div class="form-group">
+            <label class="radio-inline"> <input type="radio"
+                                                name="typeTheme" value="black"/> Black
+            </label>
+            <label class="radio-inline"><input type="radio"
+                                               name="typeTheme" value="standart" checked="true"/> Standart
+            </label>
+        </div>
+        <div class="form-group">
+				<textarea class="form-control input-lg"
+                          style="resize: vertical;" placeholder="Your blog discription"
+                          name="description" required="required"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="username"
+                   th:value="${#authentication.name}"/>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-9">
+                <input id="submitBtn" type="submit" class="btn btn-block btn-lg btn-primary"
+                       value="Create" onclick="disable()"/>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-block btn-lg btn-primary"
+                   th:href="@{|~/${#authentication.name}/home|}">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script type="text/javascript"
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!--<script th:src="@{/resources/static/js/disable.js}"></script>-->
+<!--<script th:src="@{/resources/static/js/user.js}"></script>-->
+</body>
+</html>

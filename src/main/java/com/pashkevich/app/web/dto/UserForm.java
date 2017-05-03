@@ -11,7 +11,7 @@ import static com.pashkevich.app.constants.Constants.Regex.*;
 public class UserForm {
     @Pattern(regexp = USERNAME)
     private String username;
-    @Pattern(regexp = PASSWORD)
+//    @Pattern(regexp = PASSWORD)
     private String password;
     @Pattern(regexp = FIRST_NAME)
     private String firstName;

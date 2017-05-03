@@ -1,18 +1,15 @@
 package com.pashkevich.app.service;
 
-import com.pashkevich.app.dao.RoleDao;
-import com.pashkevich.app.dao.TokenDao;
-import com.pashkevich.app.dao.UserDao;
-import com.pashkevich.app.model.Role;
-import com.pashkevich.app.model.User;
-import com.pashkevich.app.model.VerificationToken;
+import com.pashkevich.app.dao.*;
+import com.pashkevich.app.listeners.OnRegistrationCompleteEvent;
+import com.pashkevich.app.model.*;
 import com.pashkevich.app.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +25,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private BlogDao blogDao;
+
+    @Autowired
+    private PageDao pageDao;
 
     @Override
     public void save(User user) {
@@ -58,12 +64,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean resendMessage(String username, Locale locale, String appUrl) {
+        if (isExistUsername(username)) {
+            User user = findByUsername(username);
+            tokenDao.deleteByUserId(user.getId());
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, locale, appUrl));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean enableAccount(String token) {
         try {
             VerificationToken verificationToken = tokenDao.findByToken(token);
             User user = verificationToken.getUser();
             user.setEnabled(true);
             userDao.save(user);
+            tokenDao.delete(verificationToken);
             return true;
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -83,5 +101,50 @@ public class UserServiceImpl implements UserService {
         if (userDao.findByEmail(email) != null)
             return true;
         return false;
+    }
+
+    @Override
+    public List<Blog> getBlogs(String username) {
+        return blogDao.findByUsername(username);
+    }
+
+    @Override
+    public Blog getBlog(Long idBlog) {
+        return blogDao.getOne(idBlog);
+    }
+
+    @Override
+    public boolean saveBlog(Blog blog) {
+        blogDao.save(blog);
+        return true;
+    }
+
+    @Override
+    public boolean deleteBlog(Blog blog) {
+        blogDao.delete(blog);
+        return true;
+    }
+
+    @Override
+    public List<Page> getPages(Long idBlog) {
+        return pageDao.findByIdBlog(idBlog);
+    }
+
+    @Override
+    public boolean savePage(Page page) {
+        page.setCreatedAt(new Date());
+        pageDao.save(page);
+        return true;
+    }
+
+    @Override
+    public Page getPage(long idPage) {
+        return pageDao.getOne(idPage);
+    }
+
+    @Override
+    public boolean deletePage(Page page) {
+        pageDao.delete(page);
+        return true;
     }
 }

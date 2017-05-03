@@ -19,24 +19,37 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public String findLoggedInUsername() {
-        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        if (userDetails instanceof UserDetails) {
-            return ((UserDetails) userDetails).getUsername();
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+            return SecurityContextHolder.getContext().getAuthentication().getName();
         }
-
         return null;
     }
 
     @Override
-    public void autoLogin(String username, String password) {
+    public boolean autoLogin(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
-        authenticationManager.authenticate(authenticationToken);
-
-        if (authenticationToken.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        try {
+            authenticationManager.authenticate(authenticationToken);
+            if (authenticationToken.isAuthenticated()) {
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+        return false;
+    }
+
+    @Override
+    public boolean isUserAuthor(String username) {
+        return username.equals(findLoggedInUsername());
+    }
+
+    @Override
+    public boolean canEdit(String username) {
+        return false;
     }
 }

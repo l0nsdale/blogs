@@ -1,10 +1,17 @@
 package com.pashkevich.app.service;
 
+import com.pashkevich.app.model.Page;
+import com.pashkevich.app.model.Blog;
 import com.pashkevich.app.model.User;
+
+import java.util.List;
+import java.util.Locale;
 
 public interface UserService {
 
     void save(User user);
+
+    boolean resendMessage(String username, Locale locale, String appUrl);
 
     boolean isAccountEnabled(String username);
 
@@ -17,4 +24,20 @@ public interface UserService {
     boolean isExistUsername(String username);
 
     boolean isExistEmail(String email);
+
+    List<Blog> getBlogs(String username);
+
+    Blog getBlog(Long idBlog);
+
+    boolean saveBlog(Blog blog);
+
+    boolean deleteBlog(Blog blog);
+
+    List<Page> getPages(Long idBlog);
+
+    boolean savePage(Page page);
+
+    Page getPage(long idPage);
+
+    boolean deletePage(Page page);
 }

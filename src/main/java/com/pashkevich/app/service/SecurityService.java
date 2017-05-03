@@ -4,5 +4,9 @@ public interface SecurityService {
 
     String findLoggedInUsername();
 
-    void autoLogin(String username, String password);
+    boolean autoLogin(String username, String password);
+
+    boolean isUserAuthor(String username);
+
+    boolean canEdit(String username);
 }

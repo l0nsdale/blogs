@@ -29,7 +29,7 @@ import static com.pashkevich.app.constants.Constants.Views.REGISTRATION_PAGE;
 public class AuthController {
 
     @Autowired
-    public ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private UserService userService;
@@ -50,11 +50,15 @@ public class AuthController {
         if (result.hasErrors()) {
             return LOGIN_PAGE;
         }
-        if (userService.isAccountEnabled(userForm.getUsername())) {
-            securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
-            return TO_HOME;
+        if (userService.isExistUsername(userForm.getUsername())) {
+            if (userService.isAccountEnabled(userForm.getUsername())) {
+                if (securityService.autoLogin(userForm.getUsername(), userForm.getPassword())) {
+                    return TO_HOME;
+                }
+            } else {
+                model.addAttribute("enabled", true);
+            }
         }
-        model.addAttribute("enabled", true);
         return LOGIN_PAGE;
     }
 

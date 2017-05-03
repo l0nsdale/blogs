@@ -29,8 +29,8 @@
                     <div sec:authorize="isAuthenticated()">
                         <a sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-brand glyphicon glyphicon-cog"
                            href="/admin"></a>
-                        <a class="navbar-brand glyphicon glyphicon-userForm" href="#"></a>
-                        <!--th:href="@{'/'+${#authentication.name}}+'/home'" th:text="${#authentication.name}"-->
+                        <a class="navbar-brand glyphicon glyphicon-userForm" th:href="@{'/'+${#authentication.name}}+'/home'"
+                           th:text="${#authentication.name}"></a>
 
                         <a class="navbar-brand glyphicon glyphicon-log-out" th:href="@{/logout}"
                            th:text="#{common.logout}">Logout</a>

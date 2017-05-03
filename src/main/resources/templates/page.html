@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" th:href="@{/css/min-decor.css}" />
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
+    <style>
+        .affix {
+            top: 20px;
+        }
+        .centered-div { margin: auto; max-width: 300px;}
+        .containerContent {
+            width: auto;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body th:style="${'background-color:'+theme.backgroundColor+';color:'+theme.fontColor}">
+<p sec:authentication="name" id="name" style="display: none;"></p>
+<div th:replace="header :: header">
+</div>
+<div class="container">
+    <div class="row">
+        <nav class="col-sm-2">
+            <ul class="nav nav-pills nav-stacked" data-spy="affix"
+                data-offset-top="205">
+                <li class="active"><a class="text-center text-ellipsis"
+                                      style="width: 100px" data-toggle="tooltip" data-placement="right"
+                                      th:title="${pageName}"
+                                      th:href="@{'/'+${blog.username}}+'/'+${blog.id}+'/'+ ${pageId}"
+                                      th:text="${pageName}"></a></li>
+                <li th:each="page : ${pages}" th:if="${page.id}!=${pageId}"><a
+                        class="text-center text-ellipsis" style="width: 100px"
+                        data-toggle="tooltip" data-placement="right"
+                        th:title="${page.pageName}"
+                        th:href="@{'/'+${blog.username}}+'/'+${blog.id}+'/'+ ${page.id}"
+                        th:text="${page.pageName}"></a></li>
+            </ul>
+        </nav>
+        <div class="col-sm-10">
+            <div id="content">
+            </div>
+        </div>
+    </div>
+</div>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script
+        src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script th:src="@{/js/user.js}"></script>
+<script th:inline="javascript">
+    loadContent([[${page.value}]]);
+</script>
+</body>
+</html>
