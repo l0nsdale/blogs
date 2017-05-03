@@ -30,6 +30,9 @@ public class UserController {
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    private AjaxController ajaxController;
+
     @RequestMapping(value = "{username}/home", method = RequestMethod.GET)
     public String home_user(@PathVariable String username, Model model, HttpServletRequest request) {
         List<Blog> blogs = userService.getBlogs(username);
@@ -116,15 +119,16 @@ public class UserController {
 
     @RequestMapping(value = "{username}/{blogId}/newpage", method = RequestMethod.POST)
     public String createNewPage(@ModelAttribute("page") Page page, @RequestParam("content") List<String> list,
-                                @PathVariable String username, @PathVariable long blogId, WebRequest request) {
+                                @PathVariable String username, @PathVariable long blogId, @RequestParam("tages") String tages) {
         if (securityService.isUserAuthor(username)) {
-            userService.savePage(page);
+            userService.savePage(page, tages);
         }
         return "redirect:home";
     }
 
     @RequestMapping(value = "{username}/{blogId}/{pageId}")
-    public String userPage(@PathVariable String username, @PathVariable long blogId, @PathVariable long pageId, Model model) {
+    public String userPage(@PathVariable String username, @PathVariable long blogId, @PathVariable long pageId,
+                           Model model, WebRequest request) {
         Blog blog = userService.getBlog(blogId);
         Page page = userService.getPage(pageId);
         Theme theme = ThemeBuilder.getThemeStandart();
@@ -137,6 +141,7 @@ public class UserController {
         model.addAttribute("page", page);
         model.addAttribute("pages", userService.getPages(blogId));
         model.addAttribute("theme", theme);
+        model.addAttribute("rating", ajaxController.getLikes(pageId, request));
         return USER_PAGE;
     }
 

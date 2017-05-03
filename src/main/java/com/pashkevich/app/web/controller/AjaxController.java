@@ -51,4 +51,20 @@ public class AjaxController {
         }
         return idPage;
     }
+
+    @RequestMapping(value = "/like", method = RequestMethod.POST)
+    public @ResponseBody ResponseEntity like(@RequestParam Long idPage, WebRequest request) {
+        Page page = userService.getPage(idPage);
+        if (!securityService.isUserAuthor(page.getUsername())) {
+            if (userService.tryLike(page)) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/likes", method = RequestMethod.POST)
+    public @ResponseBody int getLikes(@RequestParam Long idPage, WebRequest request) {
+        return userService.getLikes(idPage);
+    }
 }

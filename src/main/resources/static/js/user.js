@@ -31,3 +31,25 @@ function deletePage(idPage){
 function loadContent(html) {
     $("#content").append(html);
 }
+
+function like(idPage) {
+    $.ajax({
+        url : '/like',
+        type: 'POST',
+        data : ({
+            "idPage": idPage
+        }),
+        success: function () {
+            $.ajax({
+                url : '/likes',
+                type: 'POST',
+                data : ({
+                    "idPage": idPage
+                }),
+                success: function (rate) {
+                    $("#rating").text(rate);
+                }
+            });
+        }
+    });
+}

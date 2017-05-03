@@ -35,9 +35,13 @@ public interface UserService {
 
     List<Page> getPages(Long idBlog);
 
-    boolean savePage(Page page);
+    boolean savePage(Page page, String tages);
 
     Page getPage(long idPage);
 
     boolean deletePage(Page page);
+
+    boolean tryLike(Page page);
+
+    int getLikes(Long pageId);
 }

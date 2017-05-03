@@ -25,10 +25,20 @@ public class Page {
 
     private Date createdAt;
 
+    private int rating;
+
     @ManyToMany
     @JoinTable(name = "page_tags", joinColumns = @JoinColumn(name = "page_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -75,5 +85,13 @@ public class Page {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

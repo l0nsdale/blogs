@@ -35,6 +35,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PageDao pageDao;
 
+    @Autowired
+    private TagDao tagDao;
+
+    @Autowired
+    private RateDao rateDao;
+
+    @Autowired
+    private SecurityService securityService;
+
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -131,8 +140,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean savePage(Page page) {
+    public boolean savePage(Page page, String tages) {
         page.setCreatedAt(new Date());
+        Set<Tag> tags = new HashSet<>();
+        for (String tagStr : tages.split(",")) {
+            Tag tag;
+            tag = tagDao.findByTag(tagStr);
+            if (tag == null) {
+                tag = new Tag();
+                tag.setTag(tagStr);
+                tagDao.save(tag);
+            }
+            tags.add(tag);
+        }
+        page.setTags(tags);
         pageDao.save(page);
         return true;
     }
@@ -146,5 +167,28 @@ public class UserServiceImpl implements UserService {
     public boolean deletePage(Page page) {
         pageDao.delete(page);
         return true;
+    }
+
+    @Override
+    public boolean tryLike(Page page) {
+        User user = userDao.findByUsername(securityService.findLoggedInUsername());
+        if (rateDao.findByUserIdAndPageId(user.getId(), page.getId()) == null) {
+            Rate rate = new Rate();
+            rate.setRate(1);
+            rate.setUserId(user.getId());
+            rate.setPageId(page.getId());
+            rateDao.save(rate);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int getLikes(Long pageId) {
+        Integer likes = rateDao.getRateByPageId(pageId);
+        if (likes == null) {
+            return 0;
+        }
+        return likes;
     }
 }

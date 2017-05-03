@@ -1,248 +1,382 @@
-function effect(url){
-	$.ajax({
-		url : '/sepiaimage',
-		type : 'POST',
-		data : ({
-			"url" : url
-		}),
-		success : function(newUrl) {
-			$("img[src='"+url+"']").attr("src",newUrl);
-			$('span[onclick="scaleOp(\''+url+'\',\'10\')"]').attr("onclick","scaleOp(\'"+newUrl+"\',\'10\')");
-			$('span[onclick="scaleOp(\''+url+'\',\'-10\')"]').attr("onclick","scaleOp(\'"+newUrl+"\',\'-10\')");
-			$('span[onclick="effect(\''+url+'\')"]').attr("onclick","effect(\'"+newUrl+"\')");
-		}
-	});
+tinymce.init({
+    selector: ".texteditor",
+    theme: "modern",
+    skin: "lightgray",
+
+    /* width and height of the editor */
+    width: "100%",
+    height: 300,
+
+    /* display statusbar */
+    statusbar: true,
+
+    /* plugin */
+    plugins: [
+        "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+        "save table contextmenu directionality emoticons template paste textcolor"
+    ],
+
+    /* toolbar */
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+
+    /* style */
+    style_formats: [
+        {title: "Headers", items: [
+            {title: "Header 1", format: "h1"},
+            {title: "Header 2", format: "h2"},
+            {title: "Header 3", format: "h3"},
+            {title: "Header 4", format: "h4"},
+            {title: "Header 5", format: "h5"},
+            {title: "Header 6", format: "h6"}
+        ]},
+        {title: "Inline", items: [
+            {title: "Bold", icon: "bold", format: "bold"},
+            {title: "Italic", icon: "italic", format: "italic"},
+            {title: "Underline", icon: "underline", format: "underline"},
+            {title: "Strikethrough", icon: "strikethrough", format: "strikethrough"},
+            {title: "Superscript", icon: "superscript", format: "superscript"},
+            {title: "Subscript", icon: "subscript", format: "subscript"},
+            {title: "Code", icon: "code", format: "code"}
+        ]},
+        {title: "Blocks", items: [
+            {title: "Paragraph", format: "p"},
+            {title: "Blockquote", format: "blockquote"},
+            {title: "Div", format: "div"},
+            {title: "Pre", format: "pre"}
+        ]},
+        {title: "Alignment", items: [
+            {title: "Left", icon: "alignleft", format: "alignleft"},
+            {title: "Center", icon: "aligncenter", format: "aligncenter"},
+            {title: "Right", icon: "alignright", format: "alignright"},
+            {title: "Justify", icon: "alignjustify", format: "alignjustify"}
+        ]}
+    ],
+    // setup: function (editor) {
+    //     editor.addButton('test', {
+    //         text: 'My button',
+    //         icon: false,
+    //         onclick: function () {
+    //             editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
+    //         }
+    //     });
+    // },
+});
+function effect(url) {
+    $.ajax({
+        url: '/sepiaimage',
+        type: 'POST',
+        data: ({
+            "url": url
+        }),
+        success: function (newUrl) {
+            $("img[src='" + url + "']").attr("src", newUrl);
+            $('span[onclick="scaleOp(\'' + url + '\',\'10\')"]').attr("onclick", "scaleOp(\'" + newUrl + "\',\'10\')");
+            $('span[onclick="scaleOp(\'' + url + '\',\'-10\')"]').attr("onclick", "scaleOp(\'" + newUrl + "\',\'-10\')");
+            $('span[onclick="effect(\'' + url + '\')"]').attr("onclick", "effect(\'" + newUrl + "\')");
+        }
+    });
 }
-function scaleOp(url,scale){
-	$.ajax({
-		url : '/scaleimage',
-		type : 'POST',
-		data : ({
-			"url" : url,
-			"scale" : scale
-		}),
-		success : function(newUrl) {
-			$("img[src='"+url+"']").attr("src",newUrl);
-			alert($('span[onclick="scaleOp(\''+url+'\',\'10\')"]').attr("onclick"));
-			$('span[onclick="scaleOp(\''+url+'\',\'10\')"]').attr("onclick","scaleOp(\'"+newUrl+"\',\'10\')");
-			$('span[onclick="scaleOp(\''+url+'\',\'-10\')"]').attr("onclick","scaleOp(\'"+newUrl+"\',\'-10\')");
-			$('span[onclick="effect(\''+url+'\')"]').attr("onclick","effect(\'"+newUrl+"\')");
-		}
-	});
+function scaleOp(url, scale) {
+    $.ajax({
+        url: '/scaleimage',
+        type: 'POST',
+        data: ({
+            "url": url,
+            "scale": scale
+        }),
+        success: function (newUrl) {
+            $("img[src='" + url + "']").attr("src", newUrl);
+            alert($('span[onclick="scaleOp(\'' + url + '\',\'10\')"]').attr("onclick"));
+            $('span[onclick="scaleOp(\'' + url + '\',\'10\')"]').attr("onclick", "scaleOp(\'" + newUrl + "\',\'10\')");
+            $('span[onclick="scaleOp(\'' + url + '\',\'-10\')"]').attr("onclick", "scaleOp(\'" + newUrl + "\',\'-10\')");
+            $('span[onclick="effect(\'' + url + '\')"]').attr("onclick", "effect(\'" + newUrl + "\')");
+        }
+    });
 }
 refresh()
 $(".draggable-item").draggable({
-     revert: 'invalid',
-	 connectToSortable: ".droppable"
+    revert: 'invalid',
+    connectToSortable: ".droppable"
 });
-function selectFirstTemplate(){
-  	$("#template").val("1");
-  	$("#dropableContainer>div").detach();
-  	$("#dropableContainer").append('<div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;"></div>');
-  	refresh()
- }
-  			
- function selectSecondTemplate(){
-  	$("#template").val("2");
-  	$("#dropableContainer>div").detach();
-  	$("#dropableContainer").append('<div class="row">' +
-  	          '<div class="col-md-6">'+
-  	          '<div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;">'+
-  	          '</div>'+
-  	          '</div>'+
-  	          '<div class="col-md-6">'+
-  	          '<div id="2" class="jumbotron droppable" style="border: solid 1px black; height: auto;">'+
-  	          '</div>'+
-  	          '</div>'+
-  	          '</div>');
-  	refresh()
-  }
-  			
- function selectThirdTemplate(){
-  	$("#template").val("3");
-  	$("#dropableContainer").empty();
-  	$("#dropableContainer").append('<div class="row">' +
-  	          '<div class="col-md-6">'+
-  	          '<div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;">'+
-  	          '</div>'+
-  	          '</div>'+
-  	          '<div class="col-md-6">'+
-  	          '<div id="2" class="jumbotron droppable" style="border: solid 1px black; height: auto;">'+
-  	          '</div>'+
-  	          '</div>'+
-  	          '</div>'+
-  	          '<div id="3" class="jumbotron droppable" style="border: solid 1px black; height: auto;">'+
-  	          '</div>');
-  	refresh()
+function selectFirstTemplate() {
+    $("#template").val("1");
+    $("#dropableContainer>div").detach();
+    $("#dropableContainer").append('<div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;"></div>');
+    refresh()
 }
- function refresh(){
-	 $(".draggable-video").draggable({
-		    helper: "clone", connectToSortable: ".droppable",
-		    start: function (event, ui) {
-		        var clone = $(ui.helper);
-		    },
-		    stop: function (event, ui) {
-		        if ($('.droppable').children().is($(ui.helper))){
-		            var statesdemo = {
-		                state0: {
-		                    title: 'Video block',
-		                    html: '<label>Youtube link <input class="form-control" type="text" name="link" value=""></label><br />',
-		                    buttons: {OK: 1, Cancel: false},
 
-		                    submit: function (e, v, m, f) {
-		                        var url = (f.link);
-		                        if (url) {
-		                            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-		                            var match = url.match(regExp);
-		                            if (match && match[2].length == 11) {
-		                                url = match[2];
-		                                $(ui.helper).empty();
-		                                $(ui.helper).removeClass('btn-default');
-		                                $(ui.helper).removeClass('btn');
-		                                $(ui.helper).append('<div id="iframe" class="container-fluid">'+
-		                                		'<div class="content col-md-8 padding-zero embed-responsive embed-responsive-16by9">'+
-		                                        '<iframe class="embed-responsive-item"' +
-		                                    ' src="https://www.youtube.com/embed/' + url + '" frameborder="0" allowfullscreen></iframe>'+
-		                                    '</div></div>');
-		                                $(ui.helper).removeClass('btn-default');
-		                                $(ui.helper).removeClass('btn');
-		                                $(ui.helper).css('height', '100%');
-		                                $(ui.helper).css('width', '100%');
-		                            } else {
-		                                $(ui.helper).remove();
-		                            }
-		                        } else {
-		                            $(ui.helper).remove();
-		                        }
-		                    },
-		                    close: function (e, v, m, f) {
-		                        $(ui.helper).remove()
-		                    }
-		                }
-		            };
-		            $.prompt(statesdemo);
-		        }
-		    }
-		});
+function selectSecondTemplate() {
+    $("#template").val("2");
+    $("#dropableContainer>div").detach();
+    $("#dropableContainer").append('<div class="row">' +
+        '<div class="col-md-6">' +
+        '<div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;">' +
+        '</div>' +
+        '</div>' +
+        '<div class="col-md-6">' +
+        '<div id="2" class="jumbotron droppable" style="border: solid 1px black; height: auto;">' +
+        '</div>' +
+        '</div>' +
+        '</div>');
+    refresh()
+}
 
-		$(".draggable-comment").draggable({
-			helper: "clone", connectToSortable: ".droppable",
-		    start: function (event, ui) {
-		        var clone = $(ui.helper);
-		    },
-		    stop: function (event, ui) {
-		    	var temp = $(".existing-draggable-comment");
-		    	if(temp.val()!=undefined){
-		    		$(ui.helper).remove();
-		    		return;
-		    	}
-		        $(ui.helper).empty();
-		        $(ui.helper).removeClass('btn-default');
-		        $(ui.helper).removeClass('btn');
-		        $(ui.helper).addClass('existing-draggable-comment');
-		        $(ui.helper).css('height', 'auto');
-		        $(ui.helper).css('width', '100%');
-		        $(ui.helper).append('<div class="modal-dialog" style="margin-left: 2%;resize:vertical; width:95%"><div class="modal-content"><div class="modal-header"></div><div class="modal-body content">'+
-		        		'<textarea style="resize:vertical; width:95%" class="form-control markdown-field comment"></textarea>'+
-		        		'<div class="modal-footer">'+
-		        		'<div class="col-md-13"><a class="btn btn-primary" th:href="@{/}">Send</a></div></div></div>');
-		    }
-		});
+function selectThirdTemplate() {
+    $("#template").val("3");
+    $("#dropableContainer").empty();
+    $("#dropableContainer").append('<div class="row">' +
+        '<div class="col-md-6">' +
+        '<div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;">' +
+        '</div>' +
+        '</div>' +
+        '<div class="col-md-6">' +
+        '<div id="2" class="jumbotron droppable" style="border: solid 1px black; height: auto;">' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<div id="3" class="jumbotron droppable" style="border: solid 1px black; height: auto;">' +
+        '</div>');
+    refresh()
+}
+function refresh() {
+    $(".draggable-video").draggable({
+        helper: "clone", connectToSortable: ".droppable",
+        start: function (event, ui) {
+            var clone = $(ui.helper);
+        },
+        stop: function (event, ui) {
+            if ($('.droppable').children().is($(ui.helper))) {
+                var statesdemo = {
+                    state0: {
+                        title: 'Video block',
+                        html: '<label>Youtube link <input class="form-control" type="text" name="link" value=""></label><br />',
+                        buttons: {OK: 1, Cancel: false},
 
-		$(".draggable-text").draggable({
-		    helper: "clone", connectToSortable: ".droppable",
-		    start: function (event, ui) {
-		        var clone = $(ui.helper);
-		    },
-		    stop: function (event, ui) {
-		        $(ui.helper).empty();
-		        $(ui.helper).removeClass('btn-default');
-		        $(ui.helper).removeClass('btn');
-		        $(ui.helper).addClass('content');
-		        $(ui.helper).css('height', 'auto');
-		        $(ui.helper).css('width', '100%');
-		        $(ui.helper).append('<textarea style="margin-left: 2%;resize:vertical; width:95%" class="form-control markdown-field"></textarea>');
-		    }
-		});
+                        submit: function (e, v, m, f) {
+                            var url = (f.link);
+                            if (url) {
+                                var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                                var match = url.match(regExp);
+                                if (match && match[2].length == 11) {
+                                    url = match[2];
+                                    $(ui.helper).empty();
+                                    $(ui.helper).removeClass('btn-default');
+                                    $(ui.helper).removeClass('btn');
+                                    $(ui.helper).append('<div id="iframe" class="container-fluid">' +
+                                        '<div class="content col-md-8 padding-zero embed-responsive embed-responsive-16by9">' +
+                                        '<iframe class="embed-responsive-item"' +
+                                        ' src="https://www.youtube.com/embed/' + url + '" frameborder="0" allowfullscreen></iframe>' +
+                                        '</div></div>');
+                                    $(ui.helper).removeClass('btn-default');
+                                    $(ui.helper).removeClass('btn');
+                                    $(ui.helper).css('height', '100%');
+                                    $(ui.helper).css('width', '100%');
+                                } else {
+                                    $(ui.helper).remove();
+                                }
+                            } else {
+                                $(ui.helper).remove();
+                            }
+                        },
+                        close: function (e, v, m, f) {
+                            $(ui.helper).remove()
+                        }
+                    }
+                };
+                $.prompt(statesdemo);
+            }
+        }
+    });
 
-		$(".draggable-raiting").draggable({
-			    helper: "clone", connectToSortable: ".droppable",
-			    start: function (event, ui) {
-			        var clone = $(ui.helper);
-			    },
-			    stop: function (event, ui) {
-			    	var temp = $(".existing-draggable-like");
-			    	if(temp.val()!=undefined){
-			    		$(ui.helper).remove();
-			    		return;
-			    	}
-			        $(ui.helper).empty();
-			        $(ui.helper).removeClass('btn-default');
-			        $(ui.helper).removeClass('btn');
-			        $(ui.helper).addClass('content');
-			        $(ui.helper).addClass('existing-draggable-like');
-			        $(ui.helper).css('height', '45px');
-			        $(ui.helper).css('width', '100%');
-			        $(ui.helper).append('    <div class="navbar-right" style="font-size: 17px;margin-right: 20px;"><span class="btn glyphicon glyphicon-thumbs-up" style="font-size: 20px;">'+
-			            '</span><text>0</text></div>');
-			    }
-			});
+    $(".draggable-comment").draggable({
+        helper: "clone", connectToSortable: ".droppable",
+        start: function (event, ui) {
+            var clone = $(ui.helper);
+        },
+        stop: function (event, ui) {
+            var temp = $(".existing-draggable-comment");
+            if (temp.val() != undefined) {
+                $(ui.helper).remove();
+                return;
+            }
+            $(ui.helper).empty();
+            $(ui.helper).removeClass('btn-default');
+            $(ui.helper).removeClass('btn');
+            $(ui.helper).addClass('existing-draggable-comment');
+            $(ui.helper).css('height', 'auto');
+            $(ui.helper).css('width', '100%');
+            $(ui.helper).append('<div class="modal-dialog" style="margin-left: 2%;resize:vertical; width:95%"><div class="modal-content"><div class="modal-header"></div><div class="modal-body content">' +
+                '<textarea style="resize:vertical; width:95%" class="form-control markdown-field comment"></textarea>' +
+                '<div class="modal-footer">' +
+                '<div class="col-md-13"><a class="btn btn-primary" th:href="@{/}">Send</a></div></div></div>');
+        }
+    });
 
-		$(".draggable-gallery").draggable({
-		    helper: "clone", connectToSortable: ".droppable",
-		    start: function (event, ui) {
-		        var clone = $(ui.helper);
-		    },
-		    stop: function (event, ui) {
-		        $(ui.helper).empty();
-		        $(ui.helper).removeClass('btn-default');
-		        $(ui.helper).removeClass('btn');
-		        $(ui.helper).addClass('container');
-		        $(ui.helper).css('height', 'auto');
-		        $(ui.helper).css('padding-bottom', '20px');
-		        $(ui.helper).css('width', '100%');
-		        $(ui.helper).append('<div class="image-left glyphicon glyphicon-picture" style="width:200px; height:200px;font-size:200px;"></div>');
-		        window.ondragover = function(e) {e.preventDefault()}
-  	  			document.getElementsByClassName("image-left")[0].ondrop = function(e) {
-  	  				e.preventDefault(); 
-  	  				var file = e.dataTransfer.files[0]; 
-  	  				var fd = new FormData;
-  	  				fd.append('img', file);
-  	  				$.ajax({
-						url : '/saveimage',
-						type : 'POST',
-						data : fd,
-						dataType: 'text',
-					    processData: false,
-					    contentType: false,
-						success : function(url) {
-							$(".image-left").remove();
-							$(ui.helper).append('<div class="content well row" style="margin-left:5%;width:70%;"><img class="images col-md-9" src="'+url+'"></img><div class="col-md-3">'+
-									'<span class="glyphicon glyphicon-zoom-in" data-toggle="tooltip" onclick="scaleOp(\''+url+'\',\'10\')" style="font-size:60px;" data-placement="right" title="Zoom in" aria-hidden="true"></span>'+
-									'<span class="glyphicon glyphicon-zoom-out" data-toggle="tooltip" onclick="scaleOp(\''+url+'\',\'-10\')" style="font-size:60px;" data-placement="right" title="Zoom out" aria-hidden="true"></span>'+
-									'<span class="glyphicon glyphicon-adjust" data-toggle="tooltip" onclick="effect(\''+url+'\')" style="font-size:60px;" data-placement="right" title="Some effect" aria-hidden="true"></span>'+
-									'</div></div>');
-						}
-					});
-  	  			}	
-		    }
-		});
+    $(".draggable-text").draggable({
+        helper: "clone", connectToSortable: ".droppable",
+        start: function (event, ui) {
+            var clone = $(ui.helper);
+        },
+        stop: function (event, ui) {
+            $(ui.helper).empty();
+            $(ui.helper).removeClass('btn-default');
+            $(ui.helper).removeClass('btn');
+            $(ui.helper).addClass('content');
+            $(ui.helper).css('height', 'auto');
+            $(ui.helper).css('width', '100%');
+            $(ui.helper).append('<textarea style="margin-left: 2%;resize:vertical; width:95%" class="texteditor form-control markdown-field"></textarea>');
+            tinymce.init({
+                selector: ".texteditor",
+                theme: "modern",
+                skin: "lightgray",
 
-		$(".droppable").sortable({
-		    over: function () {
-		        removeIntent = false
-		    },
-		    out: function () {
-		        removeIntent = true
-		    },
-		    beforeStop: function (event, ui) {
-		        if (removeIntent == true) {	
-		            ui.item.remove()
-		        }
-		    }
-		});
- }
- function cl() {
-	    $("#table").append('<tr><td><textarea style="margin-left: 2%;height:98%;width:98%" rows="1" class="el" style="resize:none;"></textarea></td><td><textarea style="margin-left: 2%;height:98%;width:98%" rows="1" class="el" style="resize:none;"></textarea></td></tr>');
-	}
+                /* width and height of the editor */
+                width: "100%",
+                height: 300,
+
+                /* display statusbar */
+                statusbar: true,
+
+                /* plugin */
+                plugins: [
+                    "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "save table contextmenu directionality emoticons template paste textcolor"
+                ],
+
+                /* toolbar */
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | test",
+
+                /* style */
+                style_formats: [
+                    {title: "Headers", items: [
+                        {title: "Header 1", format: "h1"},
+                        {title: "Header 2", format: "h2"},
+                        {title: "Header 3", format: "h3"},
+                        {title: "Header 4", format: "h4"},
+                        {title: "Header 5", format: "h5"},
+                        {title: "Header 6", format: "h6"}
+                    ]},
+                    {title: "Inline", items: [
+                        {title: "Bold", icon: "bold", format: "bold"},
+                        {title: "Italic", icon: "italic", format: "italic"},
+                        {title: "Underline", icon: "underline", format: "underline"},
+                        {title: "Strikethrough", icon: "strikethrough", format: "strikethrough"},
+                        {title: "Superscript", icon: "superscript", format: "superscript"},
+                        {title: "Subscript", icon: "subscript", format: "subscript"},
+                        {title: "Code", icon: "code", format: "code"}
+                    ]},
+                    {title: "Blocks", items: [
+                        {title: "Paragraph", format: "p"},
+                        {title: "Blockquote", format: "blockquote"},
+                        {title: "Div", format: "div"},
+                        {title: "Pre", format: "pre"}
+                    ]},
+                    {title: "Alignment", items: [
+                        {title: "Left", icon: "alignleft", format: "alignleft"},
+                        {title: "Center", icon: "aligncenter", format: "aligncenter"},
+                        {title: "Right", icon: "alignright", format: "alignright"},
+                        {title: "Justify", icon: "alignjustify", format: "alignjustify"}
+                    ]}
+                ],
+                setup: function (editor) {
+                    editor.addButton('test', {
+                        text: 'My button',
+                        icon: false,
+                        onclick: function () {
+                            editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
+                        }
+                    });
+                },
+            });
+            $(this).find('.tinyMCE').each(function () {
+                tinyMCE.execCommand('mceAddControl', true, $(this).attr('id'));
+                $(this).sortable("refresh");
+            });
+        }
+    });
+
+    $(".draggable-raiting").draggable({
+        helper: "clone", connectToSortable: ".droppable",
+        start: function (event, ui) {
+            var clone = $(ui.helper);
+        },
+        stop: function (event, ui) {
+            var temp = $(".existing-draggable-like");
+            if (temp.val() != undefined) {
+                $(ui.helper).remove();
+                return;
+            }
+            $(ui.helper).empty();
+            $(ui.helper).removeClass('btn-default');
+            $(ui.helper).removeClass('btn');
+            $(ui.helper).addClass('content');
+            $(ui.helper).addClass('existing-draggable-like');
+            $(ui.helper).css('height', '45px');
+            $(ui.helper).css('width', '100%');
+            $(ui.helper).append('    <div class="navbar-right" style="font-size: 17px;margin-right: 20px;"><span class="btn glyphicon glyphicon-thumbs-up" style="font-size: 20px;">' +
+                '</span><text>0</text></div>');
+        }
+    });
+
+    $(".draggable-gallery").draggable({
+        helper: "clone", connectToSortable: ".droppable",
+        start: function (event, ui) {
+            var clone = $(ui.helper);
+        },
+        stop: function (event, ui) {
+            $(ui.helper).empty();
+            $(ui.helper).removeClass('btn-default');
+            $(ui.helper).removeClass('btn');
+            $(ui.helper).addClass('container');
+            $(ui.helper).css('height', 'auto');
+            $(ui.helper).css('padding-bottom', '20px');
+            $(ui.helper).css('width', '100%');
+            $(ui.helper).append('<div class="image-left glyphicon glyphicon-picture" style="width:200px; height:200px;font-size:200px;"></div>');
+            window.ondragover = function (e) {
+                e.preventDefault()
+            }
+            document.getElementsByClassName("image-left")[0].ondrop = function (e) {
+                e.preventDefault();
+                var file = e.dataTransfer.files[0];
+                var fd = new FormData;
+                fd.append('img', file);
+                $.ajax({
+                    url: '/saveimage',
+                    type: 'POST',
+                    data: fd,
+                    dataType: 'text',
+                    processData: false,
+                    contentType: false,
+                    success: function (url) {
+                        $(".image-left").remove();
+                        $(ui.helper).append('<div class="content well row" style="margin-left:5%;width:70%;"><img class="images col-md-9" src="' + url + '"></img><div class="col-md-3">' +
+                            '<span class="glyphicon glyphicon-zoom-in" data-toggle="tooltip" onclick="scaleOp(\'' + url + '\',\'10\')" style="font-size:60px;" data-placement="right" title="Zoom in" aria-hidden="true"></span>' +
+                            '<span class="glyphicon glyphicon-zoom-out" data-toggle="tooltip" onclick="scaleOp(\'' + url + '\',\'-10\')" style="font-size:60px;" data-placement="right" title="Zoom out" aria-hidden="true"></span>' +
+                            '<span class="glyphicon glyphicon-adjust" data-toggle="tooltip" onclick="effect(\'' + url + '\')" style="font-size:60px;" data-placement="right" title="Some effect" aria-hidden="true"></span>' +
+                            '</div></div>');
+                    }
+                });
+            }
+        }
+    });
+
+    $(".droppable").sortable({
+        over: function () {
+            removeIntent = false
+        },
+        out: function () {
+            removeIntent = true
+        },
+        beforeStop: function (event, ui) {
+            if (removeIntent == true) {
+                ui.item.remove()
+            }
+        }
+    });
+}
+function cl() {
+    $("#table").append('<tr><td><textarea style="margin-left: 2%;height:98%;width:98%" rows="1" class="el" style="resize:none;"></textarea></td><td><textarea style="margin-left: 2%;height:98%;width:98%" rows="1" class="el" style="resize:none;"></textarea></td></tr>');
+}
  
