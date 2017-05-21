@@ -22,6 +22,17 @@
             width: auto;
             word-wrap: break-word;
         }
+        .user_name{
+            font-size:14px;
+            font-weight: bold;
+        }
+        .comments-list .media{
+            border-bottom: 1px dotted #ccc;
+        }
+        .comments-list{
+            max-height: 200px;
+            overflow-y:scroll;
+        }
     </style>
 </head>
 <body th:style="${'background-color:'+theme.backgroundColor+';color:'+theme.fontColor}">
@@ -53,9 +64,31 @@
             </div>
             <div id="content">
             </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="page-header">
+                        <h2><small class="pull-right" id="countComments" th:text="${#lists.size(comments)}+ ' comments'"></small> Comments </h2>
+                    </div>
+                    <div class="media form-group" sec:authorize="isAuthenticated()">
+                        <label for="commentArea">Your comment:</label>
+                        <textarea class="form-control" rows="5" id="commentArea"></textarea>
+                        <button th:onclick="'sendComment(\'' + ${pageId} + '\')'" type="button" class="btn btn-primary" th:text="#{comment.send}"></button>
+                    </div>
+                    <div class="comments-list">
+                        <div class="media" th:each="comment : ${comments}">
+                            <p class="pull-right"><small th:text="${comment.createdAt}"></small></p>
+                            <div class="media-body">
+                                <h4 class="media-heading user_name" th:text="${comment.username}"></h4>
+                                <p th:text="${comment.value}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -65,5 +98,7 @@
 <script th:inline="javascript">
     loadContent([[${page.value}]]);
 </script>
+<div th:replace="tags :: tags">
+</div>
 </body>
 </html>

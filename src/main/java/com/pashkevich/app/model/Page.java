@@ -1,19 +1,26 @@
 package com.pashkevich.app.model;
 
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
+@Indexed
 @Table(name = "user_pages")
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String pageName;
 
     @Column(name="value", columnDefinition="TEXT")
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String value;
 
     @Column(name="originalValue", columnDefinition="TEXT")
@@ -24,8 +31,6 @@ public class Page {
     private String username;
 
     private Date createdAt;
-
-    private int rating;
 
     @ManyToMany
     @JoinTable(name = "page_tags", joinColumns = @JoinColumn(name = "page_id"),
@@ -85,13 +90,5 @@ public class Page {
     }
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 }

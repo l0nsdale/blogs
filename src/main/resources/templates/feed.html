@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>News</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
+</head>
+<body>
+<div th:replace="header :: header">
+</div>
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">New</a></li>
+        <li><a href="#tabs-2">Popular</a></li>
+        <li><a href="#tabs-3">Favorites</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div class= "row" th:each="post : ${newposts}">
+            <div class="col-md-4">
+                <a th:text="${post.pageName}" th:href="@{'/'+${post.username} + '/'+${post.idBlog} + '/'+${post.id}}"></a>
+            </div>
+            <div class="col-md-4">
+                Publish at: <p th:text="${post.createdAt}"></p>
+            </div>
+        </div>
+    </div>
+    <div id="tabs-2">
+        <div class= "row" th:each="post : ${popularposts}">
+            <div class="col-md-4">
+                <a th:text="${post.pageName}" th:href="@{'/'+${post.username} + '/'+${post.idBlog} + '/'+${post.id}}"></a>
+            </div>
+            <div class="col-md-4">
+                Publish at: <p th:text="${post.createdAt}"></p>
+            </div>
+        </div>
+    </div>
+    <div id="tabs-3">
+        <div class= "row" th:each="post : ${favouriteposts}">
+            <div class="col-md-4">
+                <a th:text="${post.pageName}" th:href="@{'/'+${post.username} + '/'+${post.idBlog} + '/'+${post.id}}"></a>
+            </div>
+            <div class="col-md-4">
+                Publish at: <p th:text="${post.createdAt}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script>
+    $( function() {
+        $( "#tabs" ).tabs();
+    } );
+</script>
+<div th:replace="tags :: tags">
+</div>
+</body>
+</html>

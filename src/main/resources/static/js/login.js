@@ -13,3 +13,18 @@ function resendConfirmationMessage() {
     });
 
 }
+
+function reparePassword() {
+    username = $("#username").val();
+    $.ajax({
+        url : '/reparePassword',
+        type: 'POST',
+        data : ({
+            "username": username
+        }),
+        success: function () {
+            $("#mess").text("Message send");
+        }
+    });
+
+}

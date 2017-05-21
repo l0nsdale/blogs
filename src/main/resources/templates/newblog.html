@@ -18,17 +18,12 @@
 </div>
 <div class="modal-dialog">
     <form id="submitForm" class="col-md-12 center-block"
-          th:action="@{|~/${#authentication.name}/newblog|}"
+          th:action="@{'/'+${#authentication.name}}+'/newblog'"
           method="post">
         <div class="form-group">
             <input type="text" class="form-control input-lg"
                    placeholder="Name your blog" required="required" value="" name="blogName" pattern=".+$"
                    title="One or more characters"/>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control input-lg"
-                   placeholder="Tags for your blog" required="required" name="tags" pattern=".+$"
-                   title='One or more characters.Divide tags with ,'/>
         </div>
         <div class="form-group">
             <label class="radio-inline"> <input type="radio"
@@ -54,7 +49,7 @@
             </div>
             <div class="col-md-3">
                 <a class="btn btn-block btn-lg btn-primary"
-                   th:href="@{|~/${#authentication.name}/home|}">Cancel</a>
+                   th:href="@{'/'+${#authentication.name}}+'/home'">Cancel</a>
             </div>
         </div>
     </form>
@@ -64,6 +59,8 @@
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <script type="text/javascript"
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<div th:replace="tags :: tags">
+</div>
 <!--<script th:src="@{/resources/static/js/disable.js}"></script>-->
 <!--<script th:src="@{/resources/static/js/user.js}"></script>-->
 </body>

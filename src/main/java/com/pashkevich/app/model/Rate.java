@@ -18,7 +18,7 @@ public class Rate {
 
     private Long userId;
 
-    private int rate;
+    private int ball;
 
     public long getId() {
         return id;
@@ -44,11 +44,11 @@ public class Rate {
         this.pageId = pageId;
     }
 
-    public int getRate() {
-        return rate;
+    public int getBall() {
+        return ball;
     }
 
-    public void setRate(int rate) {
-        this.rate = rate;
+    public void setBall(int ball) {
+        this.ball = ball;
     }
 }

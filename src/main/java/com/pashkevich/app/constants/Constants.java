@@ -1,5 +1,8 @@
 package com.pashkevich.app.constants;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 /**
  * Created by Vlad on 06.03.17.
  */
@@ -16,6 +19,7 @@ public class Constants {
         public static final String NEW_PAGE = "newpage";
         public static final String USER_PAGE = "page";
         public static final String EDIT_PAGE = "editpage";
+        public static final String REPARE_PASSWORD = "reparepassword";
     }
 
     public static final class Redirect {
@@ -40,6 +44,11 @@ public class Constants {
     public static final class Common {
         public static final int ONE = 1;
         public static final String EMPTY = "";
+    }
+
+    public static final class Response {
+        public static ResponseEntity OK = new ResponseEntity<>(HttpStatus.OK);
+        public static ResponseEntity BAD = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

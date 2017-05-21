@@ -29,12 +29,43 @@
     </style>
 </head>
 <body>
+<div id="dialog-form" title="Subscribe">
+    <form>
+        <fieldset>
+            <div class="checkbox">
+                <div th:if="${notificationfeed}==true">
+                    <label><input id="notification-feed" name="notification-feed" type="checkbox" value="" checked="true" />Get notifications on feed</label>
+                </div>
+                <div th:if="${notificationfeed}!=true">
+                    <label><input id="notification-feed" name="notification-feed" type="checkbox" value=""/>Get notifications on feed</label>
+                </div>
+            </div>
+            <div class="checkbox">
+                <div th:if="${notificationemail}==true">
+                    <label><input id="notification-email" name="notification-email" type="checkbox" value="" checked="true"/>Get notifications on email</label>
+                </div>
+                <div th:if="${notificationemail}!=true">
+                    <label><input id="notification-email" name="notification-email" type="checkbox" value=""/>Get notifications on email</label>
+                </div>
+            </div>
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px"/>
+        </fieldset>
+    </form>
+</div>
 <div th:replace="header :: header">
 </div>
 <div class="container">
     <div class="row content">
         <div class="col-md-2  col-xs-8 sidenav" style="margin-top: 2%; width: 25%">
-            <h3>Information about creator</h3>
+            <div class="row">
+                 <div class="col-md-6">
+                   <h3>Information about creator</h3>
+                 </div>
+                <div th:if="${canEdit}!=true" class="col-md-1">
+                    <span id="subscribe" class="btn glyphicon glyphicon glyphicon-star-empty" style="font-size: 20px;" data-toggle="tooltip" data-placement="right"
+                          title="Subscribe"></span>
+                </div>
+            </div>
             <table class="table">
                 <tbody>
                 <tr>
@@ -42,7 +73,7 @@
                         <h4>Username:</h4>
                     </td>
                     <td>
-                        <h4 th:text="${user.username}"></h4>
+                        <h4 id="username" th:text="${user.username}"></h4>
                     </td>
                 </tr>
                 <tr>
@@ -81,15 +112,15 @@
                     style="height:180px">
                     <div th:if="${canEdit}==true" style="height: auto;">
                         <a class="glyphicon glyphicon-pencil" style="margin-left: 60%;text-decoration:none"
-                           role="button" th:href="@{|~/${#authentication.name}/${blog.id}/edit|}">
+                           role="button" th:href="@{'/'+${#authentication.name}+'/'+${blog.id}}+'/edit'">
                         </a>
                         <a class="glyphicon glyphicon-remove-circle" style="text-decoration:none"
                            th:onclick="'deleteBlog(\'' + ${blog.id} + '\')'" role="button">
                         </a>
                     </div>
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div th:if="${canEdit}!=true" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="glyphicon glyphicon-pencil" style="margin-left: 60%;text-decoration:none"
-                           role="button" th:href="@{|~/${blog.username}/${blog.id}/edit|}">
+                           role="button" th:href="@{'/'+${blog.username}+'/'+${blog.id}}+'/edit'">
                         </a>
                         <a class="glyphicon glyphicon-remove-circle" style="text-decoration:none"
                            th:onclick="'deleteBlog(\'' + ${blog.id} + '\')'" role="button">
@@ -117,10 +148,17 @@
             </ul>
         </div>
     </div>
+    <div class="col-md-6">
+        <button onclick="reparePassword()" type="button" class="btn btn-primary" th:text="#{log.repare.password}"></button>
+        <div id="mess"></div>
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script th:src="@{/js/user.js}"></script>
+<script th:src="@{/js/login.js}"></script>
+<div th:replace="tags :: tags">
+</div>
 </body>
 </html>

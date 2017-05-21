@@ -1,8 +1,10 @@
 package com.pashkevich.app.service;
 
+import com.pashkevich.app.model.Comment;
 import com.pashkevich.app.model.Page;
 import com.pashkevich.app.model.Blog;
 import com.pashkevich.app.model.User;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Locale;
@@ -44,4 +46,24 @@ public interface UserService {
     boolean tryLike(Page page);
 
     int getLikes(Long pageId);
+
+    boolean subscribe(String username, boolean notification_feed, boolean notification_email);
+
+    User getUser(Long userId);
+
+    boolean isNotificateFeed(String username);
+
+    boolean isNotificateEmail(String username);
+
+    void createRepareToken(String token, User user);
+
+    boolean reparePassword(String token, String password);
+
+    boolean resendRepareMessage(String url, String username);
+
+    Long deleteUser(String username);
+
+    Long editUser(String username, String password, String firstName, String lastName, String email);
+
+    List<User> getAllUsers();
 }

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet"
           href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
     <title>Login</title>
 </head>
 <body>
@@ -37,6 +38,15 @@
                         <button onclick="resendConfirmationMessage()" type="button" class="btn btn-primary" th:text="#{reg.resend.message}"></button>
                     </div>
                 </div>
+                <div th:if="${notlogin==true}">
+                    <div class="col-md-6">
+                        <p th:text="#{log.wrong}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <button onclick="reparePassword()" type="button" class="btn btn-primary" th:text="#{log.repare.password}"></button>
+                    </div>
+                    <div id="mess"></div>
+                </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-block btn-lg btn-primary"
                            value="Sign in"/>
@@ -55,6 +65,9 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script th:src="@{/js/login.js}"></script>
+<div th:replace="tags :: tags">
+</div>
 </body>
 </html>

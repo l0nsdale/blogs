@@ -67,7 +67,7 @@
                     <div th:if="${canEdit} == true" style="height: auto;">
                         <a class="glyphicon glyphicon-pencil"
                            style="margin-left: 60%;text-decoration:none;font-size:150%" role="button"
-                           th:href="@{|~/${blog.username}/${blog.id}/${page.id}/edit|}">
+                           th:href="@{'/'+${blog.username}+'/'+${blog.id}+'/'+${page.id}}+'/edit'">
                         </a>
                         <a class="glyphicon glyphicon-remove-circle" style="text-decoration:none;font-size:150%"
                            th:onclick="'deletePage(\'' + ${page.id} + '\')'" role="button">
@@ -76,7 +76,7 @@
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="glyphicon glyphicon-pencil"
                            style="margin-left: 60%;text-decoration:none;font-size:150%" role="button"
-                           th:href="@{|~/${blog.username}/${blog.id}/${page.id}/edit|}">
+                           th:href="@{'/'+${blog.username}+'/'+${blog.id}+'/'+${page.id}}+'/edit'">
                         </a>
                         <a class="glyphicon glyphicon-remove-circle" style="text-decoration:none;font-size:150%"
                            th:onclick="'deletePage(\'' + ${page.id} + '\')'" role="button">
@@ -106,16 +106,16 @@
                     <div th:if="${canEdit} == true" style="height: auto;">
                         <a class="glyphicon glyphicon-pencil"
                            style="margin-left: 60%;text-decoration:none;font-size:150%" role="button"
-                           th:href="@{|~/${blog.username}/${blog.id}/${page.id}/edit|}">
+                           th:href="@{'/'+${blog.username}+'/'+${blog.id}+'/'+${page.id}}+'/edit'">
                         </a>
                         <a class="glyphicon glyphicon-remove-circle" style="text-decoration:none;font-size:150%"
                            th:onclick="'deletePage(\'' + ${page.id} + '\')'" role="button">
                         </a>
                     </div>
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div th:if="${canEdit}!=true" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="glyphicon glyphicon-pencil"
                            style="margin-left: 60%;text-decoration:none;font-size:150%" role="button"
-                           th:href="@{|~/${blog.username}/${blog.id}/${page.id}/edit|}">
+                           th:href="@{'/'+${blog.username}+'/'+${blog.id}+'/'+${page.id}}+'/edit'">
                         </a>
                         <a class="glyphicon glyphicon-remove-circle" style="text-decoration:none;font-size:150%"
                            th:onclick="'deletePage(\'' + ${page.id} + '\')'" role="button">
@@ -150,5 +150,7 @@
 <script
         src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script th:src="@{/js/user.js}"></script>
+<div th:replace="tags :: tags">
+</div>
 </body>
 </html>

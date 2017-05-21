@@ -60,7 +60,7 @@
                 </form>
                 <div class="modal-footer">
                     <div class="col-md-13">
-                        <a class="btn btn-primary" th:href="@{|~/${#authentication.name}/home|}">Cancel</a>
+                        <a class="btn btn-primary" th:href="@{'/'+${#authentication.name}}+'/home'">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -80,6 +80,7 @@
 <script th:src="@{/js/user.js}"></script>
 <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
 <script th:src="@{/js/inputtags.js}"></script>
-
+<div th:replace="tags :: tags">
+</div>
 </body>
 </html>

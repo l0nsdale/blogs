@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="tags">
+    <script>
+        $(function () {
+            $.ajax({
+                url: '/getTags',
+                type: 'GET',
+                success: function (tags) {
+                    var availableTags = tags;
+                    $("#search").autocomplete({
+                        source: availableTags
+                    });
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

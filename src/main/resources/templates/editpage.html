@@ -6,12 +6,21 @@
     <title>Create your page</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-impromptu.css}"/>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet"
-          href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" />
     <link rel="stylesheet" type="text/css"
-          th:href="@{/css/min-decor.css}" />
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/min-decor.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/bootstrap-tagsinput.css}"/>
+    <style>
+        .bootstrap-tagsinput .tag{
+            font-size: larger;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="header :: header">
@@ -20,9 +29,11 @@
     <div class="modal-dialog" style="margin-left: 15%;">
         <div class="modal-content modal-lg center-block">
             <div class="modal-body">
-                <form id="submitForm" class="col-md-12 center-block"  method="post">
+                <input type="hidden" id="currentContent" th:value="${page.value}"/>
+                <form id="submitForm" class="col-md-12 center-block" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control input-lg" placeholder="Name your page" name="pageName" required="required" value="" pattern=".+$" title="One or more characters"/>
+                        <input type="text" class="form-control input-lg" placeholder="Name your page" name="pageName"
+                               required="required" value="" pattern=".+$" title="One or more characters"/>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="idBlog" th:value="${idBlog}"/>
@@ -33,43 +44,24 @@
                     <div class="form-group">
                         <input id="template" type="hidden" name="numContainers" value="1"/>
                     </div>
+                    <textarea class="texteditor"></textarea>
                     <div class="" style="border: solid 1px black; height: auto;padding:14px;margin-bottom: 10px">
                         <div class="row">
-                            <div class="col-md-10">
-
-                                <div class="btn-default btn draggable-text"><span class="for-span glyphicon glyphicon-font"></span>Text</div>
-                                <div class="btn-default btn draggable-video" ><span class="for-span glyphicon glyphicon-facetime-video"></span>Video</div>
-                                <div class="btn-default btn draggable-gallery" ><span class="for-span glyphicon glyphicon-picture"></span>Image</div>
-                                <div class="btn-default btn draggable-raiting" ><span class="for-span glyphicon glyphicon-thumbs-up"></span>Rating</div>
-                                <div class="btn-default btn draggable-comment" ><span class="for-span glyphicon glyphicon glyphicon-comment"></span>Comments</div>
-                                <div class="btn-default btn draggable-tabble" ><span class="for-span glyphicon glyphicon glyphicon glyphicon-th"></span>Table</div>
-
-                            </div>
                             <div class="col-md-2">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Template <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a onclick="selectFirstTemplate()">1</a></li>
-                                        <li><a onclick="selectSecondTemplate()">2</a></li>
-                                        <li><a onclick="selectThirdTemplate()">3</a></li>
-                                    </ul>
-                                </div>
+                                You can input tags here:
+                            </div>
+                            <div id="tags12">
                             </div>
                         </div>
                     </div>
-
-                    <div id="dropableContainer">
-                        <div id="1" class="jumbotron droppable" style="border: solid 1px black; height: auto;"></div>
-                    </div>
                     <div class="form-group">
-                        <input id="submitBtn" class="btn btn-block btn-lg btn-primary" onclick="savePage()" value="Create"/>
+                        <input id="submitBtn" class="btn btn-block btn-lg btn-primary" onclick="savePage()"
+                               value="Create"/>
                     </div>
                 </form>
                 <div class="modal-footer">
                     <div class="col-md-13">
-                        <a class="btn btn-primary" th:href="@{|~/${#authentication.name}/home|}">Cancel</a>
+                        <a class="btn btn-primary" th:href="@{'/'+${#authentication.name}}+'/home'">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -81,12 +73,15 @@
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script th:src="@{/js/jquery-impromptu.js}"></script>
-<script th:inline="javascript">
-    $("#dropableContainer").replaceWith([[${page.originalValue}]]);
-</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.7/jquery.tinymce.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.7/tinymce.min.js"></script>
 <script th:src="@{/js/template.js}"></script>
 <script th:src="@{/js/newpage.js}"></script>
 <script th:src="@{/js/disable.js}"></script>
 <script th:src="@{/js/user.js}"></script>
+<script th:src="@{/js/bootstrap-tagsinput.js}"></script>
+<script th:src="@{/js/inputtags.js}"></script>
+<div th:replace="tags :: tags">
+</div>
 </body>
 </html>

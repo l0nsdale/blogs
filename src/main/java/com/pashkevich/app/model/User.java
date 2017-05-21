@@ -1,12 +1,20 @@
 package com.pashkevich.app.model;
 
 import javax.persistence.*;
+
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import java.util.Set;
 
 /**
  * Created by Vlad on 20.03.17.
  */
 @Entity
+@Indexed
 @Table(name = "users")
 public class User {
 
@@ -14,6 +22,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String username;
 
     private String password;
@@ -30,6 +40,11 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_subscribers", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscriber_id"))
+    private Set<Subscriber> subscribers;
 
     public Long getId() {
         return id;
@@ -93,5 +108,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<Subscriber> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<Subscriber> subscribers) {
+        this.subscribers = subscribers;
     }
 }

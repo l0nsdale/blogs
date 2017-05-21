@@ -27,4 +27,8 @@ public class UrlUtils {
         return url;
     }
 
+    public static String getPageUrl(WebRequest request, String username, Long blogId) {
+        return getAppUrl(request) + "/" + username + "/" + blogId + "/home";
+    }
+
 }

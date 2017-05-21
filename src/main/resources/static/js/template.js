@@ -52,6 +52,13 @@ tinymce.init({
             {title: "Justify", icon: "alignjustify", format: "alignjustify"}
         ]}
     ],
+    setup : function(ed) {
+        ed.on('LoadContent', function(e) {
+            if ($("#currentContent").val()) {
+                tinyMCE.editors[0].setContent($("#currentContent").val());
+            }
+        });
+    }
     // setup: function (editor) {
     //     editor.addButton('test', {
     //         text: 'My button',

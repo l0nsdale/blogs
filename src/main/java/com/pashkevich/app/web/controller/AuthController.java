@@ -41,7 +41,8 @@ public class AuthController {
     private MessageSource messageSource;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(UserForm userForm) {
+    public String login(UserForm userForm, Model model) {
+        model.addAttribute("test","lol");
         return LOGIN_PAGE;
     }
 
@@ -54,6 +55,8 @@ public class AuthController {
             if (userService.isAccountEnabled(userForm.getUsername())) {
                 if (securityService.autoLogin(userForm.getUsername(), userForm.getPassword())) {
                     return TO_HOME;
+                } else {
+                    model.addAttribute("notlogin", true);
                 }
             } else {
                 model.addAttribute("enabled", true);

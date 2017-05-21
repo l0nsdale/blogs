@@ -7,14 +7,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Vlad on 03.05.17.
  */
-@Repository
-@RepositoryRestResource(path = "rate", collectionResourceRel = "rate")
 public interface RateDao extends JpaRepository<Rate, Long> {
     Rate findByUserIdAndPageId(Long userId, Long pageId);
 
-    @Query("SELECT SUM(r.rate) FROM Rate r WHERE r.pageId = :pageId")
+    @Query("SELECT SUM(r.ball) FROM Rate r WHERE r.pageId = :pageId")
     Integer getRateByPageId(@Param("pageId") Long pageId);
+
+    @Query("SELECT r.pageId FROM Rate r GROUP BY r.pageId ORDER BY SUM(r.ball) DESC")
+    List<Long> getTopRatePages();
 }

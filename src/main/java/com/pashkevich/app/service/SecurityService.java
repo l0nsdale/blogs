@@ -9,4 +9,8 @@ public interface SecurityService {
     boolean isUserAuthor(String username);
 
     boolean canEdit(String username);
+
+    boolean isLogged();
+
+    boolean isAdmin();
 }

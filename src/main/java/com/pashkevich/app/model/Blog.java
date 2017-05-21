@@ -1,5 +1,7 @@
 package com.pashkevich.app.model;
 
+import org.hibernate.search.annotations.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+@Indexed
 @Table(name = "user_blogs")
 public class Blog {
     @Id
@@ -16,8 +19,11 @@ public class Blog {
 
     private String username;
 
+    @Column
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String blogName;
 
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(name="description", columnDefinition="TEXT")
     private String description;
 

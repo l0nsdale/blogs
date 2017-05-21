@@ -1,15 +1,21 @@
 package com.pashkevich.app.model;
 
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Indexed
 @Table(name = "tags")
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String tag;
 
     @ManyToMany(mappedBy = "tags")
