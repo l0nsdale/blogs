@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search result</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" th:href="@{/resources/static/css/min_decor.css}" />
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" />
+</head>
+<body>
+<div th:replace="header :: header">
+</div>
+<div class="container">
+    <div class="list-group col-md-3">
+        Blogs
+        <a class="list-group-item" th:each="find : ${searchs}" th:if="${find.type}=='blog'" th:href="${find.url}" th:text="${find.name}"></a>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="list-group col-md-3">
+        Pages
+        <a class="list-group-item" th:each="find : ${searchs}" th:if="${find.type}=='page'" th:href="${find.url}" th:text="${find.name}"></a>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="list-group col-md-3">
+        Users
+        <a class="list-group-item" th:each="find : ${searchs}" th:if="${find.type}=='user'" th:href="${find.url}" th:text="${find.name}"></a>
+    </div>
+</div>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script
+        src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script th:src="@{/resources/static/js/user.js}"></script>
+<div th:replace="tags :: tags">
+</div>
+</body>
+</html>
