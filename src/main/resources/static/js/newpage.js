@@ -118,3 +118,20 @@ function savePage() {
 
 
 }
+
+$( function() {
+    $("#colorText").val("#000000");
+    $("#colorText").spectrum({
+        color: "#000000",
+        change: function (color) {
+            $("#colorText").val(color.toHexString());
+        }
+    });
+    $("#colorBackground").val("#eee");
+    $("#colorBackground").spectrum({
+        color: "#eee",
+        change: function (color) {
+            $("#colorBackground").val(color.toHexString());
+        }
+    });
+});

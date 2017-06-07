@@ -1,5 +1,6 @@
 package com.pashkevich.app.service;
 
+import com.pashkevich.app.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,9 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public String findLoggedInUsername() {
@@ -51,16 +55,18 @@ public class SecurityServiceImpl implements SecurityService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        try {
-            authenticationManager.authenticate(authenticationToken);
-            if (authenticationToken.isAuthenticated()) {
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                return true;
-            }
-        } catch (Exception e) {
-            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+        if (!userService.findByUsername(username).isBlocked()) {
+            try {
+                authenticationManager.authenticate(authenticationToken);
+                if (authenticationToken.isAuthenticated()) {
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    return true;
+                }
+            } catch (Exception e) {
+                SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
 //            SecurityContextHolder.getContext().setAuthentication(null);
-            System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
+            }
         }
         return false;
     }
@@ -85,5 +91,12 @@ public class SecurityServiceImpl implements SecurityService {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean logout() {
+        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return true;
     }
 }

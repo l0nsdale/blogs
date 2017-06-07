@@ -58,6 +58,15 @@ public class PageServiceImpl implements PageService{
             pageForm.setIdBlog(page.getIdBlog());
             pageForm.setOriginalValue(page.getOriginalValue());
             pageForm.setValue(value);
+            StringBuilder pageTags = new StringBuilder();
+            for (Tag tag : page.getTags()) {
+                pageTags.append(tag.getTag());
+                pageTags.append(',');
+            }
+            if (pageTags.length() > 0) {
+                pageTags.deleteCharAt(pageTags.length() - 1);
+            }
+            pageForm.setPageTags(pageTags.toString());
             pageForm.setId(page.getId());
             String preview = value.substring(0, Math.min(value.length(), 100));
             StringBuilder previewBuilder = new StringBuilder(preview);

@@ -1,5 +1,7 @@
 package com.pashkevich.app.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.pashkevich.app.dao.*;
 import com.pashkevich.app.listeners.OnRegistrationCompleteEvent;
 import com.pashkevich.app.listeners.OnReparePasswordEvent;
@@ -9,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -51,12 +55,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CommentDao commentDao;
 
+    @Autowired
+    private SearchDao searchDao;
+
+    @Autowired
+    private Cloudinary cloudinary;
+
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
-        roles.add(roleDao.getOne(2L));
+        roles.add(roleDao.getOne(1L));
         user.setRoles(roles);
+        user.setBlocked(false);
         saveUser(user);
     }
 
@@ -141,7 +152,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteBlog(Blog blog) {
+        List<Page> pages = pageDao.findByIdBlogOrderByCreatedAtDesc(blog.getId());
+        for (Page page : pages) {
+            for (Tag tag : page.getTags()) {
+                tagDao.delete(tag);
+                searchDao.refresh(tag);
+            }
+            pageDao.delete(page);
+            searchDao.refresh(page);
+        }
         blogDao.delete(blog);
+        searchDao.refresh(blog);
         return true;
     }
 
@@ -151,8 +172,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean savePage(Page page, String tages) {
-
+    public boolean savePage(Page page, String tages, MultipartFile background) {
+        if (!background.isEmpty()) {
+            try {
+                Map<String, String> imageData = cloudinary.uploader().upload(background.getBytes(), ObjectUtils.emptyMap());
+                page.setBackgroundImage(imageData.get("secure_url"));
+            } catch (IOException e) {
+                e.getMessage();
+            }
+        }
         page.setCreatedAt(new Date());
         Set<Tag> tags = new HashSet<>();
         for (String tagStr : tages.split(",")) {
@@ -177,7 +205,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deletePage(Page page) {
-        pageDao.delete(page);
+        try {
+            pageDao.delete(page);
+            searchDao.refresh(page);
+        } catch (Exception e) {
+            e.getMessage();
+        }
         return true;
     }
 
@@ -251,7 +284,7 @@ public class UserServiceImpl implements UserService {
         User currentUser = findByUsername(securityService.findLoggedInUsername());
         Set<Subscriber> subscribers = user.getSubscribers();
         for (Subscriber subscriber : subscribers) {
-            if (subscriber.getUserId()  == currentUser.getId()) {
+            if (subscriber.getUserId() == currentUser.getId()) {
                 return subscriber.isNotificationfeed();
             }
         }
@@ -264,7 +297,7 @@ public class UserServiceImpl implements UserService {
         User currentUser = findByUsername(securityService.findLoggedInUsername());
         Set<Subscriber> subscribers = user.getSubscribers();
         for (Subscriber subscriber : subscribers) {
-            if (subscriber.getUserId()  == currentUser.getId()) {
+            if (subscriber.getUserId() == currentUser.getId()) {
                 return subscriber.isNotificationemail();
             }
         }
@@ -296,7 +329,7 @@ public class UserServiceImpl implements UserService {
         User user;
         if (securityService.isLogged()) {
             user = findByUsername(securityService.findLoggedInUsername());
-        } else  {
+        } else {
             user = findByUsername(username);
         }
         try {
@@ -313,7 +346,22 @@ public class UserServiceImpl implements UserService {
     public Long deleteUser(String username) {
         try {
             User user = findByUsername(username);
+            List<Blog> blogs = blogDao.findByUsername(user.getUsername());
+            for (Blog blog : blogs) {
+                List<Page> pages = pageDao.findByIdBlogOrderByCreatedAtDesc(blog.getId());
+                for (Page page : pages) {
+                    for (Tag tag : page.getTags()) {
+                        tagDao.delete(tag);
+                        searchDao.refresh(tag);
+                    }
+                    pageDao.delete(page);
+                    searchDao.refresh(page);
+                }
+                blogDao.delete(blog);
+                searchDao.refresh(blog);
+            }
             userDao.delete(user);
+            searchDao.refresh(user);
             return user.getId();
         } catch (Exception e) {
             e.getMessage();
@@ -354,5 +402,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userDao.findAll();
+    }
+
+    @Override
+    public long blockUser(String username) {
+        User user = findByUsername(username);
+        if (user.isBlocked()) {
+            user.setBlocked(false);
+        } else {
+            user.setBlocked(true);
+        }
+        try {
+            userDao.save(user);
+            return user.getId();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return 0L;
     }
 }

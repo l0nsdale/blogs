@@ -35,10 +35,16 @@
         }
     </style>
 </head>
-<body th:style="${'background-color:'+theme.backgroundColor+';color:'+theme.fontColor}">
+<!--<body th:if="${page.backgroundImage}==null" th:style="${'background-color:'+page.colorBackground+';color:'+page.colorText}">-->
+<body th:style="${page.backgroundImage!=null ?
+'background-color:'+page.colorBackground+';background-image:url('+page.backgroundImage+');color:'+page.colorText :
+'background-color:'+page.colorBackground+';color:'+page.colorText}">
 <p sec:authentication="name" id="name" style="display: none;"></p>
 <div th:replace="header :: header">
 </div>
+<br/>
+<br/>
+<br/>
 <div class="container">
     <div class="row">
         <nav class="col-sm-2">
@@ -67,7 +73,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="page-header">
-                        <h2><small class="pull-right" id="countComments" th:text="${#lists.size(comments)}+ ' comments'"></small> Comments </h2>
+                        <h2><p class="pull-right" id="countComments" th:text="${#lists.size(comments)}+ ' comments'"></p> Comments </h2>
                     </div>
                     <div class="media form-group" sec:authorize="isAuthenticated()">
                         <label for="commentArea">Your comment:</label>

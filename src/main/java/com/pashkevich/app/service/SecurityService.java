@@ -13,4 +13,6 @@ public interface SecurityService {
     boolean isLogged();
 
     boolean isAdmin();
+
+    boolean logout();
 }

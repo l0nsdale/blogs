@@ -2,6 +2,7 @@ package com.pashkevich.app.web.controller;
 
 import com.pashkevich.app.service.PageService;
 import com.pashkevich.app.service.SearchService;
+import com.pashkevich.app.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class HomeController {
     @Autowired
     private SearchService searchService;
 
+    @Autowired
+    private SecurityService securityService;
+
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String home() {
         System.out.println("1. " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -36,7 +40,9 @@ public class HomeController {
     public String feed(Model model){
         model.addAttribute("newposts", pageService.getNewPages());
         model.addAttribute("popularposts", pageService.getPopularPages());
-        model.addAttribute("favouriteposts", pageService.getFavouritePages());
+        if (securityService.isLogged()) {
+            model.addAttribute("favouriteposts", pageService.getFavouritePages());
+        }
         return "feed";
     }
 

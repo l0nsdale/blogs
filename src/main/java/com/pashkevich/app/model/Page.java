@@ -32,7 +32,13 @@ public class Page {
 
     private Date createdAt;
 
-    @ManyToMany
+    private String colorText;
+
+    private String colorBackground;
+
+    private String backgroundImage;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "page_tags", joinColumns = @JoinColumn(name = "page_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
@@ -90,5 +96,29 @@ public class Page {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getColorText() {
+        return colorText;
+    }
+
+    public void setColorText(String colorText) {
+        this.colorText = colorText;
+    }
+
+    public String getColorBackground() {
+        return colorBackground;
+    }
+
+    public void setColorBackground(String colorBackground) {
+        this.colorBackground = colorBackground;
+    }
+
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(String backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 }

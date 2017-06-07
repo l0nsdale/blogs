@@ -132,4 +132,12 @@ public class AjaxController {
     public @ResponseBody List<String> getAvailableTags() {
         return pageService.getAvailableTags();
     }
+
+    @RequestMapping(value = "/blockuser", method = RequestMethod.POST)
+    public @ResponseBody long blockUser(@RequestParam String username) {
+        if (securityService.isAdmin()) {
+            return userService.blockUser(username);
+        }
+        return 0L;
+    }
 }

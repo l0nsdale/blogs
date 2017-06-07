@@ -18,7 +18,7 @@ public class Tag {
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String tag;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags", cascade = CascadeType.ALL)
     private Set<Page> pages;
 
     public Long getId() {

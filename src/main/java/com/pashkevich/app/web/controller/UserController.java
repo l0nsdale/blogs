@@ -10,6 +10,7 @@ import com.pashkevich.app.service.UserService;
 import com.pashkevich.app.utils.UrlUtils;
 import com.pashkevich.app.utils.theme.Theme;
 import com.pashkevich.app.utils.theme.ThemeBuilder;
+import com.pashkevich.app.web.dto.PageForm;
 import com.pashkevich.app.web.dto.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -111,7 +113,7 @@ public class UserController {
     public String blogHome(@PathVariable String username, @PathVariable long blogId,
                            Model model) {
         Blog blog = userService.getBlog(blogId);
-        List<Page> pages = userService.getPages(blogId);
+        List<PageForm> pages = pageService.generatePageForms(userService.getPages(blogId));
         Theme theme = ThemeBuilder.getThemeStandart();
         if (blog.getTypeTheme().equals("black")) {
             theme = ThemeBuilder.getThemeBlack();
@@ -147,9 +149,9 @@ public class UserController {
     @RequestMapping(value = "{username}/{blogId}/newpage", method = RequestMethod.POST)
     public String createNewPage(@ModelAttribute("page") Page page, @RequestParam("content") List<String> list,
                                 @PathVariable String username, @PathVariable long blogId, @RequestParam("tages") String tages,
-                                WebRequest request) {
+                                WebRequest request, @RequestParam("background") MultipartFile background) {
         if (securityService.isUserAuthor(username)) {
-            userService.savePage(page, tages);
+            userService.savePage(page, tages, background);
             eventPublisher.publishEvent(new OnPagePublicationEvent(userService.findByUsername(username),
                     UrlUtils.getPageUrl(request, username, blogId)));
         }
@@ -190,6 +192,9 @@ public class UserController {
     @RequestMapping(value = "/reparepassword", method = RequestMethod.POST)
     public String reparePost(@RequestParam("token") String token, @RequestParam("password") String password) {
         if (userService.reparePassword(token, password)) {
+            if (securityService.isLogged()) {
+                securityService.logout();
+            }
             return "redirect:login";
         }
         return "redirect:registration";

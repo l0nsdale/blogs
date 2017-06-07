@@ -5,6 +5,7 @@ import com.pashkevich.app.model.Page;
 import com.pashkevich.app.model.Blog;
 import com.pashkevich.app.model.User;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +38,7 @@ public interface UserService {
 
     List<Page> getPages(Long idBlog);
 
-    boolean savePage(Page page, String tages);
+    boolean savePage(Page page, String tages, MultipartFile background);
 
     Page getPage(long idPage);
 
@@ -66,4 +67,6 @@ public interface UserService {
     Long editUser(String username, String password, String firstName, String lastName, String email);
 
     List<User> getAllUsers();
+
+    long blockUser(String username);
 }

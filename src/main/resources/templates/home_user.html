@@ -59,9 +59,9 @@
         <div class="col-md-2  col-xs-8 sidenav" style="margin-top: 2%; width: 25%">
             <div class="row">
                  <div class="col-md-6">
-                   <h3>Information about creator</h3>
+                   <h3 th:text="#{user.info.creator}"></h3>
                  </div>
-                <div th:if="${canEdit}!=true" class="col-md-1">
+                <div sec:authorize="isAuthenticated()" th:if="${canEdit}!=true" class="col-md-1">
                     <span id="subscribe" class="btn glyphicon glyphicon glyphicon-star-empty" style="font-size: 20px;" data-toggle="tooltip" data-placement="right"
                           title="Subscribe"></span>
                 </div>
@@ -70,7 +70,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        <h4>Username:</h4>
+                        <h4 th:text="#{user.info.username}"></h4>
                     </td>
                     <td>
                         <h4 id="username" th:text="${user.username}"></h4>
@@ -78,7 +78,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <h4>First name:</h4>
+                        <h4 th:text="#{user.info.firstname}"></h4>
                     </td>
                     <td>
                         <h4 th:text="${user.firstName}"></h4>
@@ -106,7 +106,7 @@
 
 
         <div class="col-md-8" style="margin-top: 2%">
-            <h3 class="text-center">User blogs</h3>
+            <h3 class="text-center" th:text="#{user.info.blogs}"></h3>
             <ul>
                 <li th:each="blog : ${blogs}" class="col-md-3 col-xs-11 well blog-block tagContainer" th:id="${blog.id}"
                     style="height:180px">
@@ -127,14 +127,14 @@
                         </a>
                     </div>
                     <h4 class="text-ellipsis">
-                        Blog name:
+                        <p th:text="#{user.info.blogname}"></p>
                         <a th:href="@{'/'+${username}}+'/'+${blog.id}+'/home'"
                            th:text="${blog.blogName}" th:title="${blog.blogName}"></a>
 
                     </h4>
                     <p class="text-ellipsis">
                         <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right"
-                              title="Blog discription"></span>
+                              th:title="#{user.info.blogdesc}"></span>
                         <span th:text="${blog.description}"></span>
                     </p>
                 </li>
@@ -148,7 +148,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" th:if="${canEdit}==true">
         <button onclick="reparePassword()" type="button" class="btn btn-primary" th:text="#{log.repare.password}"></button>
         <div id="mess"></div>
     </div>

@@ -10,6 +10,8 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css"/>
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css"
@@ -29,7 +31,7 @@
     <div class="modal-dialog" style="margin-left: 15%;">
         <div class="modal-content modal-lg center-block">
             <div class="modal-body">
-                <form id="submitForm" class="col-md-12 center-block" method="post">
+                <form id="submitForm" class="col-md-12 center-block" enctype="multipart/form-data" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control input-lg" placeholder="Name your page" name="pageName"
                                required="required" value="" pattern=".+$" title="One or more characters"/>
@@ -44,6 +46,30 @@
                         <input id="template" type="hidden" name="numContainers" value="1"/>
                     </div>
                     <textarea class="texteditor"></textarea>
+                    <div class="" style="border: solid 1px black; height: auto;padding:14px;margin-bottom: 10px">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Choose color of text:
+                            </div>
+                            <input type="text" name="colorText" id="colorText" />
+                        </div>
+                    </div>
+                    <div class="" style="border: solid 1px black; height: auto;padding:14px;margin-bottom: 10px">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Choose color of background:
+                            </div>
+                            <input type="text" name="colorBackground" id="colorBackground" />
+                        </div>
+                    </div>
+                    <div class="" style="border: solid 1px black; height: auto;padding:14px;margin-bottom: 10px">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Image of background:
+                            </div>
+                            <input type="file" name="background" />
+                        </div>
+                    </div>
                     <div class="" style="border: solid 1px black; height: auto;padding:14px;margin-bottom: 10px">
                         <div class="row">
                             <div class="col-md-2">
@@ -74,6 +100,7 @@
 <script th:src="@{/js/jquery-impromptu.js}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.7/jquery.tinymce.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.7/tinymce.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 <script th:src="@{/js/template.js}"></script>
 <script th:src="@{/js/newpage.js}"></script>
 <script th:src="@{/js/disable.js}"></script>

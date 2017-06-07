@@ -92,6 +92,10 @@ public class SearchDao {
 //        List<Content> result = jpaQuery.getResultList();
 //        return result;
 //    }
+    public void refresh (Object obj) {
+        em.merge(obj);
+        em.refresh(obj);
+    }
 
     public List<User> findUser(String search) {
         FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);

@@ -1,3 +1,19 @@
+function blockUser(username){
+    $.ajax({
+        url : '/blockuser',
+        type: 'POST',
+        data : ({
+            "username": username
+        }),
+        success: function (id) {
+        	if ($($("#"+id).children(".blockedF")).html() == 'true') {
+                $($("#" + id).children(".blockedF")).html("false")
+            } else {
+                $($("#"+id).children(".blockedF")).html("true");
+			}
+        }
+    });
+}
 function deleteUser(username){
 	$.ajax({
 			url : '/deleteuser',
@@ -51,4 +67,13 @@ function deleteSelectedUsers(){
 		deleteUser(username);
 		$(this).parent($("td")).parent($("tr")).remove();
 	});
+}
+
+function blockSelectedUsers(){
+    $("input:checkbox:checked").each(function(){
+        var id = $(this).parent("td").parent("tr").children(".idF").text();
+        var username = $("#"+id).children(".usernameF").text();
+        blockUser(username);
+        $("#"+id).children(".checkboxF").children("input").attr('checked', false);
+    });
 }

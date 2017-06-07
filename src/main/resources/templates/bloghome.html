@@ -18,12 +18,12 @@
 <div class="container">
     <div class="row content">
         <div class="col-md-3  col-xs-9 sidenav" style="margin-top: 2%; width: 25%">
-            <h3>Information about page</h3>
+            <h3 th:text="#{blog.info.blog}"></h3>
             <table class="table">
                 <tbody>
                 <tr>
                     <td>
-                        <h4>Blog name:</h4>
+                        <h4 th:text="#{blog.info.blogname}"></h4>
                     </td>
                     <td>
                         <h4 th:text="${blog.blogName}"></h4>
@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <h4>Author:</h4>
+                        <h4 th:text="#{blog.info.author}"></h4>
                     </td>
                     <td>
                         <h4 th:text="${blog.username}"></h4>
@@ -39,18 +39,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <h4>Discription:</h4>
+                        <h4 th:text="#{blog.info.desc}"></h4>
                     </td>
                     <td>
                         <h4 th:text="${blog.description}"></h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h4>Tags:</h4>
-                    </td>
-                    <td>
-                        <h4 th:text="${tags}"></h4>
                     </td>
                 </tr>
                 </tbody>
@@ -59,7 +51,7 @@
 
 
         <div class="col-md-9" style="margin-top: 2%">
-            <h3 class="text-center">Blog pages</h3>
+            <h3 class="text-center" th:text="#{blog.info.pages}"></h3>
             <ul th:if="${theme.comentColor}=='silver'">
                 <li th:each="page : ${pages}" class="col-md-3 col-xs-11 well blog-block tagContainer" th:id="${page.id}"
                     style="height:180px;">
@@ -73,7 +65,7 @@
                            th:onclick="'deletePage(\'' + ${page.id} + '\')'" role="button">
                         </a>
                     </div>
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div th:if="${canEdit} != true" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="glyphicon glyphicon-pencil"
                            style="margin-left: 60%;text-decoration:none;font-size:150%" role="button"
                            th:href="@{'/'+${blog.username}+'/'+${blog.id}+'/'+${page.id}}+'/edit'">
@@ -83,13 +75,14 @@
                         </a>
                     </div>
                     <h4 class="text-ellipsis">
-                        Page name:
+                        <p th:text="#{blog.info.pagename}"></p>
                         <a th:href="@{'/'+${blog.username}}+'/'+${blog.id}+'/'+${page.id}"
                            th:text="${page.pageName}"></a>
 
                     </h4>
                     <p class="text-ellipsis">
-                        Что-то?
+                        <p th:text="#{blog.info.pagetags}"></p>
+                        <b th:text="${page.pageTags}"></b>
                     </p>
                 </li>
                 <li class="col-md-3  col-xs-11 well blog-block" th:if="${canEdit}==true" style="height:180px;">
@@ -122,14 +115,13 @@
                         </a>
                     </div>
                     <h4 class="text-ellipsis">
-                        Page name:
+                        <p th:text="#{blog.info.pagename}"></p>
                         <a th:href="@{'/'+${blog.username}}+'/'+${blog.id}+'/'+${page.id}"
                            th:text="${page.pageName}"></a>
-
                     </h4>
-                    <p class="text-ellipsis">
-                        Что-то?
-                    </p>
+                    <!--<p class="text-ellipsis">-->
+                        <!--Что-то?-->
+                    <!--</p>-->
                 </li>
                 <li class="col-md-3  col-xs-11 well blog-block" th:if="${canEdit}==true"
                     th:style="'height:180px;background:'+${theme.comentColor}">

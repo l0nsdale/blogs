@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8"/>
     <title>News</title>
@@ -17,7 +18,7 @@
     <ul>
         <li><a href="#tabs-1">New</a></li>
         <li><a href="#tabs-2">Popular</a></li>
-        <li><a href="#tabs-3">Favorites</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="#tabs-3">Favorites</a></li>
     </ul>
     <div id="tabs-1">
         <div class= "row" th:each="post : ${newposts}">
@@ -39,7 +40,7 @@
             </div>
         </div>
     </div>
-    <div id="tabs-3">
+    <div id="tabs-3" sec:authorize="isAuthenticated()">
         <div class= "row" th:each="post : ${favouriteposts}">
             <div class="col-md-4">
                 <a th:text="${post.pageName}" th:href="@{'/'+${post.username} + '/'+${post.idBlog} + '/'+${post.id}}"></a>

@@ -42,7 +42,7 @@ public class SearchServiceImpl implements SearchService {
         for (Page page : pages) {
             SearchResult result = new SearchResult();
             result.setType("page");
-            result.setName(page.getUsername());
+            result.setName(page.getPageName());
             result.setUrl(UrlUtils.getAppUrl(request) + "/" + page.getUsername() + "/" + page.getIdBlog() + "/" +
                 page.getId());
             results.add(result);
@@ -50,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
         for (Blog blog : blogs) {
             SearchResult result = new SearchResult();
             result.setType("blog");
-            result.setName(blog.getUsername());
+            result.setName(blog.getBlogName());
             result.setUrl(UrlUtils.getAppUrl(request) + "/" + blog.getUsername() + "/" + blog.getId() + "/" +
                     "home");
             results.add(result);
@@ -60,7 +60,7 @@ public class SearchServiceImpl implements SearchService {
             Set<Page> pageList = tag.getPages();
             for (Page page : pageList) {
                 result.setType("page");
-                result.setName(page.getUsername());
+                result.setName(page.getPageName());
                 result.setUrl(UrlUtils.getAppUrl(request) + "/" + page.getUsername() + "/" + page.getIdBlog() + "/" +
                         page.getId());
                 results.add(result);

@@ -36,6 +36,8 @@ public class User {
 
     private boolean enabled;
 
+    private boolean blocked;
+
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -116,5 +118,13 @@ public class User {
 
     public void setSubscribers(Set<Subscriber> subscribers) {
         this.subscribers = subscribers;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }

@@ -24,29 +24,31 @@
                 <div class="form-group">
                     <input type="text" class="form-control text-center input-lg"
                            th:value="${session[username]}" th:placeholder="#{user.form.username}"
-                           th:field="*{username}" autofocus=""/>
+                           th:field="*{username}" autofocus=""
+                           th:title="#{user.reg.valid.username}"/>
                 </div>
                 <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</p>
                 <div th:if="${existUsername != null}" th:text="#{user.existUsername}"></div>
                 <div class="form-group">
                     <input type="password" class="form-control text-center input-lg"
-                           th:placeholder="#{user.form.password}" th:field="*{password}"/>
+                           th:placeholder="#{user.form.password}" th:field="*{password}"
+                           th:title="#{user.reg.valid.password}"/>
                 </div>
                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
                 <div class="form-group">
                     <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.email}"
-                           th:field="*{email}"/>
+                           th:field="*{email}" th:title="#{user.reg.valid.email}"/>
                 </div>
                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</p>
-                <div class="form-group">
-                    <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.firstname}"
-                           th:field="*{firstName}"/>
-                </div>
-                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</p>
                 <div th:if="${existEmail != null}" th:text="#{user.existEmail}"></div>
                 <div class="form-group">
+                    <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.firstname}"
+                           th:field="*{firstName}" th:title="#{user.reg.valid.firstname}"/>
+                </div>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</p>
+                <div class="form-group">
                     <input type="text" class="form-control text-center input-lg" th:placeholder="#{user.form.lastname}"
-                           th:field="*{lastName}"/>
+                           th:field="*{lastName}" th:title="#{user.reg.valid.lastname}"/>
                 </div>
                 <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</p>
                 <div class="row">
@@ -68,5 +70,10 @@
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <div th:replace="tags :: tags">
 </div>
+<script>
+    $( function() {
+        $( document ).tooltip();
+    } );
+</script>
 </body>
 </html>

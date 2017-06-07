@@ -26,6 +26,7 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Email</th>
+            <th>Blocked</th>
             <th>Select</th>
         </tr>
         </thead>
@@ -37,11 +38,13 @@
             <td class="firstNameF"><input type="text" th:value="${user.firstName}"/></td>
             <td class="lastNameF"><input type="text" th:value="${user.lastName}"/></td>
             <td class="emailF"><input type="text" th:value="${user.email}"/></td>
+            <td class="blockedF" th:text="${user.blocked}"></td>
             <td class="checkboxF"><input type="checkbox" value="selected"/></td>
         </tr>
         </tbody>
     </table>
     <div class="row">
+        <a class="glyphicon glyphicon-off" role="button" style="font-size: 2.2em;text-decoration:none" onclick="blockSelectedUsers()"></a>
         <a class="glyphicon glyphicon-trash" role="button" style="font-size: 2.2em;text-decoration:none" onclick="deleteSelectedUsers()"></a>
         <a class="glyphicon glyphicon-pencil" role="button" style="font-size: 2.2em;text-decoration:none" onclick="editSelectedUsers()"></a>
     </div>
